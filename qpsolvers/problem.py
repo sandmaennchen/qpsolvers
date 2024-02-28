@@ -56,6 +56,8 @@ class Problem:
         Lower bound constraint vector. Can contain ``-np.inf``.
     ub :
         Upper bound constraint vector. Can contain ``+np.inf``.
+    is_feasible  :
+        bool indicating whether the QP is feasible. Default: True
     """
 
     P: Union[np.ndarray, spa.csc_matrix]
@@ -66,6 +68,7 @@ class Problem:
     b: Optional[np.ndarray] = None
     lb: Optional[np.ndarray] = None
     ub: Optional[np.ndarray] = None
+    is_feasible: bool = True
 
     @staticmethod
     def __check_matrix(
@@ -126,6 +129,7 @@ class Problem:
         b: Optional[np.ndarray] = None,
         lb: Optional[np.ndarray] = None,
         ub: Optional[np.ndarray] = None,
+        is_feasible: bool = True,
     ) -> None:
         P = Problem.__check_matrix(P)
         q = Problem.__check_vector(q, "q")
@@ -143,6 +147,7 @@ class Problem:
         self.b = b
         self.lb = lb
         self.ub = ub
+        self.is_feasible = is_feasible
 
     @property
     def has_sparse(self) -> bool:
@@ -369,6 +374,7 @@ class Problem:
             b=np.array(self.b),
             lb=np.array(self.lb),
             ub=np.array(self.ub),
+            is_feasible=np.array(self.is_feasible)
         )
 
     @staticmethod
@@ -400,6 +406,7 @@ class Problem:
             b=load_optional("b"),
             lb=load_optional("lb"),
             ub=load_optional("ub"),
+            is_feasible=load_optional("is_feasible").item()
         )
 
     def get_cute_classification(self, interest: str) -> str:
