@@ -232,3 +232,11 @@ class Solution:
                 z_box_pos = np.maximum(self.z_box, 0.0)
                 ub_z_box = ub[finite].dot(z_box_pos[finite])
         return abs(xPx + qx + hz + by + lb_z_box + ub_z_box)
+
+    def objective_value(self,) -> float:
+        if self.found:
+            val = 0.5 * self.x.T.dot(self.problem.P.dot(self.x)) + self.problem.q.dot(self.x)
+        else:
+            val = np.inf
+
+        return val
